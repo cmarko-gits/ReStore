@@ -34,7 +34,6 @@ export const router = createBrowserRouter([
             {path:'contact' , element : <ContactPage/>},
             {path:'server-error' , element : <ServerError/>},
             {path:'checkout' , element : <CheckoutPage/>},
-            {path:'Orders/:id' , element : <OrderDetailed/>},
             {path:'login' , element : <Login/>},
             {path:'register' , element : <Register/>},
             {path:'not-found' , element : <NotFound/>},
