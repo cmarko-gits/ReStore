@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "vNPOSQXh7tI=",
+  "dgSpecHash": "2THMDg+cwhI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\api\\API.csproj",
+  "projectFilePath": "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\makro\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\makro\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.11\\microsoft.aspnetcore.authentication.jwtbearer.8.0.11.nupkg.sha512",

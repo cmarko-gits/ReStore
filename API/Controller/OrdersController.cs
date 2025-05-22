@@ -48,7 +48,6 @@ public async Task<ActionResult<Order>> CreateOrder(CreateOrderDto orderDto)
 
     var items = new List<OrderItem>();
 
-    // Create order items and update product stock
     foreach (var basketItem in basket.Items)
     {
         var product = await _context.Products.FindAsync(basketItem.ProductId);
@@ -76,7 +75,6 @@ public async Task<ActionResult<Order>> CreateOrder(CreateOrderDto orderDto)
         product.QuantityInStock -= basketItem.Quantity;
     }
 
-    // Calculate subtotal and delivery fee
     var subtotal = items.Sum(item => item.Price * item.Quantity);
     var deliveryFee = subtotal > 1000 ? 0 : 500;
 

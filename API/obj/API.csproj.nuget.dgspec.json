@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\api\\API.csproj": {}
+    "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\api\\API.csproj": {
+    "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\api\\API.csproj",
+        "projectUniqueName": "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\api\\API.csproj",
+        "projectPath": "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\API\\API.csproj",
         "packagesPath": "C:\\Users\\makro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\api\\obj\\",
+        "outputPath": "C:\\Users\\makro\\OneDrive\\Desktop\\ReStore\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -43,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -93,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

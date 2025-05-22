@@ -1,10 +1,5 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace API.Middleware
 {
@@ -22,17 +17,14 @@ namespace API.Middleware
             _environment = environment;
         }
 
-        // Metoda koja obrađuje izuzetke
         public async Task InvokeAsync(HttpContext context)
         {
             try
             {
-                // Nastavlja sa obradom zahteva kroz pipeline
                 await _next(context);
             }
             catch (Exception ex)
             {
-                // Ako se desi izuzetak, logujemo ga
                 _logger.LogError(ex, "An error occurred while processing the request.");
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = 500;

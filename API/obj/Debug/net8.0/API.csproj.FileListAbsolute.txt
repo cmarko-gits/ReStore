@@ -330,3 +330,6 @@ C:\Users\makro\OneDrive\Desktop\ReStore\api\obj\Debug\net8.0\refint\API.dll
 C:\Users\makro\OneDrive\Desktop\ReStore\api\obj\Debug\net8.0\API.pdb
 C:\Users\makro\OneDrive\Desktop\ReStore\api\obj\Debug\net8.0\API.genruntimeconfig.cache
 C:\Users\makro\OneDrive\Desktop\ReStore\api\obj\Debug\net8.0\ref\API.dll
+C:\Users\makro\OneDrive\Desktop\ReStore\api\bin\Debug\net8.0\API.staticwebassets.endpoints.json
+C:\Users\makro\OneDrive\Desktop\ReStore\api\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\makro\OneDrive\Desktop\ReStore\api\obj\Debug\net8.0\staticwebassets\msbuild.API.Microsoft.AspNetCore.StaticWebAssetEndpoints.props

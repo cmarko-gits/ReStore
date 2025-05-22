@@ -19,13 +19,13 @@ namespace API.Controller
 
     
 
-        [HttpGet(Name = "GetBasket")] // Explicit route for getting a basket
+        [HttpGet(Name = "GetBasket")]
         public async Task<ActionResult<BasketDto>> GetBasket()
         {
             var basket = await RetrieveBasketAsync(GetBuyerId());
 
             if (basket == null) 
-                return NotFound("Basket not found.");  // Better to provide context in the NotFound
+                return NotFound("Basket not found.");  
 
             return basket.MapBasketToBasketDto();
         }
@@ -53,7 +53,6 @@ namespace API.Controller
 
         private Basket CreateBasket()
         {
-
 
             var buyerId = User.Identity?.Name;
             
@@ -103,7 +102,6 @@ namespace API.Controller
                 return null ;
             }
 
-            // Retrieves the basket associated with the buyerId stored in the cookies
             return await _context.Baskets
                 .Include(i => i.Items)
                 .ThenInclude(p => p.Product)
