@@ -5,99 +5,127 @@ import agent from "../api/agent";
 import { router } from "../router/Routes";
 import { toast } from "react-toastify";
 import { setBasket } from "../features/basket/basketSlice";
-;
 
 interface AccountState {
-    user : User | null
+  user: User | null;
+  token: string | null;
+  refreshToken: string | null;
+  error: string | null;
 }
 
-export const signInUser = createAsyncThunk<User, FieldValues>(
-    'account/signInUser',
-    async (data, thunkApi) => {
-      try {
-        const userDto = await agent.Account.login(data);
-        const {basket , ...user} = userDto;
+const initialState: AccountState = {
+  user: null,
+  token: null,
+  refreshToken: null,
+  error: null,
+};
 
-        if(basket) thunkApi.dispatch(setBasket(basket))
+// Login korisnika - vraća user, token i refreshToken
+export const signInUser = createAsyncThunk<
+  { user: User; token: string; refreshToken: string },
+  FieldValues
+>(
+  "account/signInUser",
+  async (data, thunkApi) => {
+    try {
+      const userDto = await agent.Account.login(data);
+      const { basket, token, refreshToken, ...user } = userDto;
 
-        localStorage.setItem('user', JSON.stringify(user)); // Sačuvaj korisnika kao JSON string
-        return user;
-      } catch (error: any) {
-        return thunkApi.rejectWithValue({ error: error.data });
-      }
+      if (basket) thunkApi.dispatch(setBasket(basket));
+
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({ user, token, refreshToken })
+      );
+
+      return { user, token, refreshToken };
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error?.response?.data || "Login failed");
     }
-  );
-  
-
-export const fetchCurrentUser = createAsyncThunk<User>(
-    'account/fetchCurrentUser', // Promeni naziv akcije za fetchCurrentUser
-    
-    async (_, thunkApi) => {
-
-        thunkApi.dispatch(setUser(JSON.parse(localStorage.getItem('user')!)))
-
-        try {
-            const userDto = await agent.Account.currentUser();
-
-            const {basket , ...user} = userDto;
-
-            if(basket) thunkApi.dispatch(setBasket(basket))
-            localStorage.setItem('user', JSON.stringify(user)); // Sačuvaj korisnika kao JSON string
-            return user;
-        } catch (error: any) {
-            return thunkApi.rejectWithValue({ error: error.data });
-        }
-    },{
-        condition : () => {
-            if(!localStorage.getItem('user'))return false;
-        }
-    }
+  }
 );
 
+// Fetch trenutnog korisnika koristeći token iz localStorage
+export const fetchCurrentUser = createAsyncThunk<
+  { user: User; token: string; refreshToken: string },
+  void,
+  { rejectValue: string }
+>(
+  "account/fetchCurrentUser",
+  async (_, thunkApi) => {
+    try {
+      const userDto = await agent.Account.currentUser();
+      const { basket, token, refreshToken, ...user } = userDto;
 
-const initialState : AccountState = {
-    user : null
-}
+      if (basket) thunkApi.dispatch(setBasket(basket));
+
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({ user, token, refreshToken })
+      );
+
+      return { user, token, refreshToken };
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error?.response?.data || "Session expired");
+    }
+  },
+  {
+    condition: () => {
+      return !!localStorage.getItem("userData");
+    },
+  }
+);
 
 export const accountSlice = createSlice({
-    name : 'account',
-    initialState,
-    reducers : {
-        signOut : (state) =>{
-            state.user = null
-            localStorage.removeItem('user')
-            router.navigate('/')
-        },
-        setUser : (state , action) =>{
-            state.user = action.payload
-        }
+  name: "account",
+  initialState,
+  reducers: {
+    signOut: (state) => {
+      state.user = null;
+      state.token = null;
+      state.refreshToken = null;
+      state.error = null;
+      localStorage.removeItem("userData");
+      router.navigate("/");
     },
-    extraReducers: (builder) => {
+    setUser: (state, action) => {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.refreshToken = action.payload.refreshToken;
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCurrentUser.rejected, (state, action) => {
+      state.user = null;
+      state.token = null;
+      state.refreshToken = null;
+      state.error = action.payload || "Session expired - please login again";
+      localStorage.removeItem("userData");
+      toast.error(state.error);
+      router.navigate("/");
+    });
 
-        builder.addCase(fetchCurrentUser.rejected , (state)=>{
-            state.user = null 
-            localStorage.removeItem('user')
-            toast.error('Session expired - please login again')
-            router.navigate('/')
-        })
+    builder.addMatcher(
+      isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled),
+      (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.refreshToken = action.payload.refreshToken;
+        state.error = null;
+      }
+    );
 
+    builder.addMatcher(
+      isAnyOf(signInUser.rejected, fetchCurrentUser.rejected),
+      (state, action) => {
+        state.error = action.payload || "Authentication failed";
+        toast.error(state.error);
+      }
+    );
+  },
+});
 
-        builder.addMatcher(
-            isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled),
-            (state, action) => {
-                state.user = action.payload;
-            }
-        );
-    
-    
-        builder.addMatcher(
-            isAnyOf(signInUser.rejected, fetchCurrentUser.rejected),
-            (state , action) => {
+export const { signOut, setUser } = accountSlice.actions;
 
-                throw action.payload
-            }
-        );
-    }
-})
-
-export const {signOut,setUser} = accountSlice.actions;
+export default accountSlice.reducer;
